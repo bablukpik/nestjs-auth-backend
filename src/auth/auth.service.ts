@@ -57,6 +57,7 @@ export class AuthService {
       { $set: { refreshToken: await hash(refreshToken, 10) } },
     );
 
+    // Set auth token and refresh token in cookies
     response.cookie('Authentication', accessToken, {
       httpOnly: true,
       secure: this.configService.get('NODE_ENV') === 'production',
@@ -88,7 +89,7 @@ export class AuthService {
     }
   }
 
-  async veryifyUserRefreshToken(refreshToken: string, userId: string) {
+  async verifyUserRefreshToken(refreshToken: string, userId: string) {
     try {
       const user = await this.usersService.getUser({ _id: userId });
       const authenticated = await compare(refreshToken, user.refreshToken);

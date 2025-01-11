@@ -19,6 +19,7 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
   }
 }
 
+// Notes:
 // Each strategy has a respective guard
 // LocalStrategy -> LocalAuthGuard
 // JwtStrategy -> JwtAuthGuard

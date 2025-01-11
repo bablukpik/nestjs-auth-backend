@@ -24,7 +24,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   // Verify that the user's token is valid.
-  // The payload is the decoded JWT payload extracted by the strategy.
+  // The payload is the decoded JWT payload extracted by the strategy automatically during initialization.
   async validate(payload: TokenPayload) {
     // Validate and retrieve the user by the payload's userId.
     return this.usersService.getUser({ _id: payload.userId });

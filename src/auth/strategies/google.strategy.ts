@@ -4,6 +4,8 @@ import { PassportStrategy } from '@nestjs/passport';
 import { Strategy } from 'passport-google-oauth20';
 import { UsersService } from '../../users/users.service';
 
+// For each strategy, we need to create a new class that extends PassportStrategy
+// And implement the validate method
 @Injectable()
 export class GoogleStrategy extends PassportStrategy(Strategy) {
   constructor(

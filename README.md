@@ -38,6 +38,9 @@ pnpm install
 3. Create a `.env` file in the root directory with the following variables:
 
 ```env
+# NODE_ENV
+NODE_ENV=development
+
 # MongoDB
 MONGODB_URI=mongodb://localhost:27017/your-database
 
