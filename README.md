@@ -567,18 +567,6 @@ pnpm run start:prod
 - Token refresh rate
 - Average response time
 
-## Support
-
-For support, please:
-
-1. Check the documentation
-2. Search existing issues
-3. Create a new issue with:
-   - Environment details
-   - Steps to reproduce
-   - Expected vs actual behavior
-   - Relevant logs
-
 ## Security Deep Dive
 
 ### Token Storage: Cookies vs localStorage
@@ -1259,26 +1247,6 @@ MongooseModule.forRootAsync({
 });
 ```
 
-## Migration Guide
-
-### From Previous Versions
-
-1. **v1.x to v2.x**
-
-   - Update dependencies
-   - Migrate to new authentication flow
-   - Update cookie settings
-   - Implement refresh token rotation
-
-2. **Database Migrations**
-
-```typescript
-// Example migration script
-async function migrate() {
-  await db.collection('users').updateMany({}, { $set: { role: 'user' } });
-}
-```
-
 ## FAQ
 
 ### Common Questions
@@ -1323,34 +1291,6 @@ async function migrate() {
    - Caching improvements
    - Database optimization
    - Connection pooling
-
-## Community and Support
-
-### Getting Help
-
-1. **GitHub Issues**
-
-   - Bug reports
-   - Feature requests
-   - Questions
-
-2. **Discord Community**
-   - Real-time support
-   - Discussion forums
-   - Knowledge sharing
-
-### Contributing Guidelines
-
-1. **Code Style**
-
-   - Follow ESLint configuration
-   - Use Prettier formatting
-   - Write meaningful commit messages
-
-2. **Testing Requirements**
-   - Unit tests for new features
-   - E2E tests for API endpoints
-   - Integration tests for services
 
 ## Contributing
 
