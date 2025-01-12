@@ -147,8 +147,8 @@ src/
 
 ```typescript
 @Module({
-imports: [UsersModule, PassportModule, JwtModule],
-providers: [AuthService, LocalStrategy, JwtStrategy, JwtRefreshStrategy, GoogleStrategy],
+  imports: [UsersModule, PassportModule, JwtModule],
+  providers: [AuthService, LocalStrategy, JwtStrategy, JwtRefreshStrategy, GoogleStrategy],
 })
 ```
 
@@ -167,9 +167,9 @@ providers: [AuthService, LocalStrategy, JwtStrategy, JwtRefreshStrategy, GoogleS
 
 ```typescript
 @Module({
-imports: [MongooseModule.forFeature([{ name: User.name, schema: UserSchema }])],
-providers: [UsersService],
-exports: [UsersService],
+  imports: [MongooseModule.forFeature([{ name: User.name, schema: UserSchema }])],
+  providers: [UsersService],
+  exports: [UsersService],
 })
 ```
 
@@ -514,58 +514,6 @@ For detailed API documentation, run the server and visit:
 ```bash
 http://localhost:3000/api
 ```
-
-## Deployment
-
-### Docker Deployment
-
-```dockerfile
-# Full application deployment
-docker compose -f docker-compose.prod.yml up -d
-```
-
-### Kubernetes Deployment
-
-```bash
-# Build Docker image
-docker build -t nestjs-auth .
-# Push to Docker Hub
-docker push your-dockerhub-username/nestjs-auth
-# Deploy to Kubernetes
-kubectl apply -f kubernetes-deployment.yaml
-```
-
-### Manual Deployment
-
-1. Build the application
-
-```bash
-pnpm run build
-```
-
-2. Set production environment variables
-
-3. Run the application
-
-```bash
-pnpm run start:prod
-```
-
-## Monitoring
-
-### Health Checks
-
-- GET /health - Basic health check
-- GET /health/db - Database health
-- GET /health/detailed - Detailed system status
-
-### Metrics
-
-- Request rate
-- Error rate
-- Authentication success/failure rate
-- Token refresh rate
-- Average response time
 
 ## Security Deep Dive
 
