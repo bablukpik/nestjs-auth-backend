@@ -6,6 +6,7 @@ import { User } from '../users/schema/user.schema';
 import { UsersService } from '../users/users.service';
 import { Response } from 'express';
 import { TokenPayload } from './token-payload.interface';
+import { UserResponseDto } from '../users/dto/user-response.dto';
 
 @Injectable()
 export class AuthService {
@@ -37,7 +38,7 @@ export class AuthService {
     );
 
     const tokenPayload: TokenPayload = {
-      userId: user._id.toHexString(),
+      userId: user._id.toString(),
     };
     const accessToken = this.jwtService.sign(tokenPayload, {
       secret: this.configService.getOrThrow('JWT_ACCESS_TOKEN_SECRET'),
@@ -76,12 +77,12 @@ export class AuthService {
 
   async verifyUser(email: string, password: string) {
     try {
-      const user = await this.usersService.getUser({
+      const user = await this.usersService.getUserWithPassword({
         email,
       });
-      const authenticated = await compare(password, user.password);
-      if (!authenticated) {
-        throw new UnauthorizedException();
+      const passwordIsValid = await compare(password, user.password);
+      if (!passwordIsValid) {
+        throw new UnauthorizedException('Invalid credentials');
       }
       return user;
     } catch (err) {

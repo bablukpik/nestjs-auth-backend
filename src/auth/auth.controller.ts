@@ -29,7 +29,9 @@ export class AuthController {
   @UseGuards(JwtRefreshAuthGuard)
   async refreshToken(
     // @CurrentUser() user: User,
-    @Req() req: RequestWithUser, // if you don't want to use @CurrentUser() user: User
+    // if you don't want to use @CurrentUser() user: User
+    @Req() req: RequestWithUser,
+    // Without passthrough: true, the response object will not be passed to the next middleware or route handler or we have to send response manually like express style
     @Res({ passthrough: true }) response: Response,
   ) {
     await this.authService.login(req.user, response);

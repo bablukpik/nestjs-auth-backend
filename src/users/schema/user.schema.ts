@@ -1,18 +1,16 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Types } from 'mongoose';
+import { Document } from 'mongoose';
 
+// Extend Document to get access to _id and other Mongoose document methods
 @Schema()
-export class User {
-  @Prop()
-  _id?: Types.ObjectId; // Marked optional since Mongoose auto-generates it. We can omit this field too
-
-  @Prop({ unique: true })
+export class User extends Document {
+  @Prop({ required: true, unique: true })
   email: string;
 
   @Prop()
   refreshToken?: string;
 
-  @Prop()
+  @Prop({ required: true })
   password: string;
 }
 
