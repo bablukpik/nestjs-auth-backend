@@ -2,6 +2,12 @@
 
 A robust authentication service built with NestJS, featuring local authentication, JWT tokens, and Google OAuth2.0 integration.
 
+## Related Repositories
+
+- Frontend Repository: [Next.js Frontend](https://github.com/bablukpik/nestjs-auth-frontend)
+  - Contains the Next.js frontend application that integrates with this authentication service
+  - Features TypeScript, Tailwind CSS, and server-side authentication
+
 ## Features
 
 - 🔐 Local Authentication with Email/Password
@@ -25,8 +31,8 @@ A robust authentication service built with NestJS, featuring local authenticatio
 1. Clone the repository:
 
 ```bash
-git clone <repository-url>
-cd nestjs-auth
+git clone git@github.com:bablukpik/nestjs-auth-backend.git
+cd nestjs-auth-backend
 ```
 
 2. Install dependencies:
