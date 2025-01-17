@@ -39,7 +39,9 @@ export class AuthController {
 
   @Get('google')
   @UseGuards(GoogleAuthGuard)
-  loginGoogle() {}
+  loginGoogle() {
+    // This is handled by GoogleAuthGuard
+  }
 
   @Get('google/callback')
   @UseGuards(GoogleAuthGuard)
@@ -48,5 +50,12 @@ export class AuthController {
     @Res({ passthrough: true }) response: Response,
   ) {
     await this.authService.login(user, response, true);
+  }
+
+  @Post('logout')
+  async logout(@Res({ passthrough: true }) response: Response) {
+    response.clearCookie('Authentication');
+    response.clearCookie('Refresh');
+    return { message: 'Logged out successfully' };
   }
 }

@@ -12,67 +12,67 @@ import { UserResponseDto } from '../users/dto/user-response.dto';
 export class AuthService {
   constructor(
     private readonly usersService: UsersService,
-    private readonly configService: ConfigService,
     private readonly jwtService: JwtService,
+    private readonly configService: ConfigService,
   ) {}
 
-  async login(user: User, response: Response, redirect = false) {
-    const expiresAccessToken = new Date();
-    expiresAccessToken.setMilliseconds(
-      expiresAccessToken.getTime() +
-        parseInt(
-          this.configService.getOrThrow<string>(
-            'JWT_ACCESS_TOKEN_EXPIRATION_MS',
-          ),
-        ),
+  async setCurrentRefreshToken(refreshToken: string, userId: string) {
+    const hashedRefreshToken = await hash(refreshToken, 10);
+    await this.usersService.updateUser(
+      { _id: userId },
+      {
+        refreshToken: hashedRefreshToken,
+      },
     );
+  }
 
-    const expiresRefreshToken = new Date();
-    expiresRefreshToken.setMilliseconds(
-      expiresRefreshToken.getTime() +
-        parseInt(
-          this.configService.getOrThrow<string>(
-            'JWT_REFRESH_TOKEN_EXPIRATION_MS',
-          ),
-        ),
-    );
-
+  async login(user: User, response: Response, isGoogleAuth = false) {
     const tokenPayload: TokenPayload = {
       userId: user._id.toString(),
     };
+
     const accessToken = this.jwtService.sign(tokenPayload, {
       secret: this.configService.getOrThrow('JWT_ACCESS_TOKEN_SECRET'),
-      expiresIn: `${this.configService.getOrThrow(
-        'JWT_ACCESS_TOKEN_EXPIRATION_MS',
-      )}ms`,
+      expiresIn: parseInt(
+        this.configService.getOrThrow('JWT_ACCESS_TOKEN_EXPIRATION_MS'),
+      ),
     });
+
     const refreshToken = this.jwtService.sign(tokenPayload, {
       secret: this.configService.getOrThrow('JWT_REFRESH_TOKEN_SECRET'),
-      expiresIn: `${this.configService.getOrThrow(
-        'JWT_REFRESH_TOKEN_EXPIRATION_MS',
-      )}ms`,
+      expiresIn: parseInt(
+        this.configService.getOrThrow('JWT_REFRESH_TOKEN_EXPIRATION_MS'),
+      ),
     });
 
-    await this.usersService.updateUser(
-      { _id: user._id },
-      { $set: { refreshToken: await hash(refreshToken, 10) } },
-    );
+    await this.setCurrentRefreshToken(refreshToken, user._id.toString());
 
-    // Set auth token and refresh token in cookies
     response.cookie('Authentication', accessToken, {
       httpOnly: true,
+      path: '/',
+      maxAge: parseInt(
+        this.configService.getOrThrow('JWT_ACCESS_TOKEN_EXPIRATION_MS'),
+      ),
       secure: this.configService.get('NODE_ENV') === 'production',
-      expires: expiresAccessToken,
-    });
-    response.cookie('Refresh', refreshToken, {
-      httpOnly: true,
-      secure: this.configService.get('NODE_ENV') === 'production',
-      expires: expiresRefreshToken,
     });
 
-    if (redirect) {
+    response.cookie('Refresh', refreshToken, {
+      httpOnly: true,
+      path: '/',
+      maxAge: parseInt(
+        this.configService.getOrThrow('JWT_REFRESH_TOKEN_EXPIRATION_MS'),
+      ),
+      secure: this.configService.get('NODE_ENV') === 'production',
+    });
+
+    if (isGoogleAuth) {
       response.redirect(this.configService.getOrThrow('AUTH_UI_REDIRECT'));
     }
+
+    return new UserResponseDto({
+      id: user._id.toString(),
+      email: user.email,
+    });
   }
 
   async verifyUser(email: string, password: string) {
