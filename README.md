@@ -1214,15 +1214,6 @@ MongooseModule.forRootAsync({
 3. **Q: Can I use this with microservices?**
    A: Yes, the authentication service can be adapted for microservices architecture using JWT validation.
 
-### Known Issues
-
-1. **Token Refresh Race Condition**
-
-   - Solution: Implement refresh token rotation with a grace period
-
-2. **CORS Issues with Cookies**
-   - Solution: Ensure proper CORS configuration with credentials
-
 ## Roadmap
 
 ### Upcoming Features
