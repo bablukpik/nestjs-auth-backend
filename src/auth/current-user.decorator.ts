@@ -1,11 +1,11 @@
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
-
-const getCurrentUserByContext = (context: ExecutionContext) =>
-  context.switchToHttp().getRequest().user; // extract user from request like const user = req.user;
+import { User } from '../users/schema/user.schema';
 
 export const CurrentUser = createParamDecorator(
-  (_data: unknown, context: ExecutionContext) =>
-    getCurrentUserByContext(context), // returns user object
+  (_data: unknown, ctx: ExecutionContext): User => {
+    const req = ctx.switchToHttp().getRequest();
+    return req.user; // extract user from request like const user = req.user and returns the user object
+  },
 );
 
 // Uses
